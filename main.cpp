@@ -1,16 +1,15 @@
 #include <iostream>
 #include <string>
-#include <fstream>
+#include <sstream>
 
 using std::cout;
 using std::cin;
 using std::endl;
 using std::cerr;
 using std::string;
-using std::ofstream;
-using std::ifstream;
 using std::ostream;
 using std::istream;
+using std::stringstream;
 
 const int MAX_TRANSACTIONS = 5;
 
@@ -43,6 +42,19 @@ void ExampleOne();
 void ExampleTwo();
 
 int main() {
+	stringstream data;
+	data.str(
+		"5 8 1999 gas 12.11 "
+   		"9 10 1999 restaurant 55.12 "
+   		"11 12 1999 groceries 121.00"
+			);
+	Transactions myTransactions;
+	InitTransactions(myTransactions);
+	ReadTransactions(data, myTransactions);
+	WriteTransactions(cout, myTransactions);
+	return 0;
+}
+void ExampleOne(){
 	Transactions myTransactions;
 	InitTransactions(myTransactions);
 	cout << "Input Transactions:\n day month year merchant amout" << endl;
@@ -56,9 +68,8 @@ int main() {
 	cout << "Showing the transactions read: " << endl;
 	WriteTransactions(cout, myTransactions);
 	cout << "Total Amount Registered: " << TotalTransactions(myTransactions) << endl;
-	return 0;
-}
 
+}
 
 bool ReadTransaction(istream& input, Transaction& transaction){
 	if (input.fail())
