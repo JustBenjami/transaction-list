@@ -25,10 +25,9 @@ struct Transaction{
 struct Transactions{
 	unsigned int count;
 	Transaction transactions[MAX_TRANSACTIONS];
-
-
-
 };
+
+
 
 bool ReadTransaction(istream& input, Transaction& transaction);
 bool WriteTransaction(ostream& output, const Transaction& transaction);
@@ -37,7 +36,11 @@ bool AddTransaction(Transactions& transactions, const Transaction& transaction);
 int WriteTransactions(ostream& output, const Transactions& transactions);
 int ReadTransactions(istream& input, Transactions& transactions);
 double TotalTransactions(const Transactions& transactions);
+// Implement this function, it will sum all the amounts of the transactions of the given year
+double TotalTransactionsPerYear(const Transactions& transactions, unsigned int year);
 
+void ExampleOne();
+void ExampleTwo();
 
 int main() {
 	Transactions myTransactions;
@@ -55,6 +58,7 @@ int main() {
 	cout << "Total Amount Registered: " << TotalTransactions(myTransactions) << endl;
 	return 0;
 }
+
 
 bool ReadTransaction(istream& input, Transaction& transaction){
 	if (input.fail())
@@ -109,4 +113,7 @@ double TotalTransactions(const Transactions& transactions){
 		total += transactions.transactions[i].amount;
 	}
 	return total;
+}
+double TotalTransactionsPerYear(const Transactions& transactions, unsigned int year){
+	return -1;
 }
