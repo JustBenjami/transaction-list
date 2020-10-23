@@ -42,7 +42,17 @@ double TotalTransactions(const Transactions& transactions);
 int main() {
 	Transactions myTransactions;
 	InitTransactions(myTransactions);
-
+	cout << "Input Transactions:\n day month year merchant amout" << endl;
+	cout << "Signal EOF when done" << endl;
+	int totalRead = ReadTransactions(cin, myTransactions);
+	if (totalRead == -1){
+		cerr << "Something went wrong when reading";
+		exit(1);
+	}
+	cout << endl << "- - - - - - - - - - - - - - - - - - - - - - - - - " << endl;
+	cout << "Showing the transactions read: " << endl;
+	WriteTransactions(cout, myTransactions);
+	cout << "Total Amount Registered: " << TotalTransactions(myTransactions) << endl;
 	return 0;
 }
 
@@ -54,8 +64,8 @@ bool ReadTransaction(istream& input, Transaction& transaction){
 	return !input.fail();
 }
 bool WriteTransaction(ostream& output, const Transaction& transaction){
-	output << transaction.day << transaction.month << transaction.year
-		   << transaction.merchant << transaction.amount;
+	output << transaction.day << " " << transaction.month << " " << transaction.year
+		   << " " << transaction.merchant << " " << transaction.amount;
 	return !output.fail();
 }
 void InitTransactions(Transactions& transactions){
@@ -66,6 +76,7 @@ bool AddTransaction(Transactions& transactions, const Transaction& transaction){
 		return false;
 	transactions.transactions[transactions.count] = transaction;
 	transactions.count++;
+	return true;
 }
 int WriteTransactions(ostream& output, const Transactions& transactions){
 	if (output.fail()){
@@ -74,6 +85,7 @@ int WriteTransactions(ostream& output, const Transactions& transactions){
 	unsigned int transactionsWritten = 0;
 	for (unsigned int i = 0; i < transactions.count; ++i) {
 		WriteTransaction(output, transactions.transactions[i]);
+		output << endl;
 		transactionsWritten++;
 	}
 	return transactionsWritten;
@@ -83,15 +95,11 @@ int ReadTransactions(istream& input, Transactions& transactions){
 		return -1;
 	Transaction aTransaction;
 	unsigned int transactionsRead = 0;
-	for (unsigned int i = 0; i < transactions.count; ++i) {
-		if (ReadTransaction(input, aTransaction)){
-			if (AddTransaction(transactions, aTransaction))
-				transactionsRead++;
-			else
-				break;
-		}else{
+	while(ReadTransaction(input, aTransaction)) {
+		if (AddTransaction(transactions, aTransaction))
+			transactionsRead++;
+		else
 			break;
-		}
 	}
 	return transactionsRead;
 }
@@ -100,4 +108,5 @@ double TotalTransactions(const Transactions& transactions){
 	for (unsigned int i = 0; i < transactions.count; ++i) {
 		total += transactions.transactions[i].amount;
 	}
+	return total;
 }
