@@ -126,5 +126,10 @@ double TotalTransactions(const Transactions& transactions){
 	return total;
 }
 double TotalTransactionsPerYear(const Transactions& transactions, unsigned int year){
-	return -1;
+	double total {0.0};
+	for (size_t i {}; i < transactions.count; ++i) {
+	    if (transactions.transactions[i].year == year)
+	        total += transactions.transactions[i].amount;
+	}
+	return total;
 }
